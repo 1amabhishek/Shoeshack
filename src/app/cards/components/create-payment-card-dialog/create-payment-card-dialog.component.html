@@ -1,0 +1,83 @@
+<h2 mat-dialog-title class="mat-dialog-title">
+  <mat-icon svgIcon="credit-card" class="mr-2"></mat-icon>
+  Create Card
+  <div class="flex-spacer"></div>
+  <button mat-icon-button (click)="closeDialog()">
+    <mat-icon svgIcon="close"></mat-icon>
+  </button>
+</h2>
+<mat-dialog-content>
+  <form [formGroup]="form" class="py-2 form">
+    <mat-form-field appearance="outline" color="primary" class="mat-form-field">
+      <mat-label>Cardholder Name</mat-label>
+      <input
+        matInput
+        type="text"
+        placeholder="Cardholder Name..."
+        formControlName="cardholder"
+      />
+      <mat-icon matPrefix svgIcon="account-credit-card"></mat-icon>
+      <mat-error class="mat-error" *ngIf="form.get('cardholder')?.hasError('required')">
+        Cardholder name is required
+      </mat-error>
+      <mat-error class="mat-error" *ngIf="form.get('cardholder')?.hasError('minlength')">
+        Cardholder name must be at least 3 characters
+      </mat-error>
+      <mat-error class="mat-error" *ngIf="form.get('cardholder')?.hasError('maxlength')">
+        Cardholder name must be maximum 100 characters
+      </mat-error>
+      <mat-error class="mat-error" *ngIf="form.get('cardholder')?.hasError('onlyLettersAndSpaces')">
+        Cardholder name can only contain letters and spaces
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field appearance="outline" color="primary" class="mat-form-field">
+      <mat-label>Card Number</mat-label>
+      <input
+        matInput
+        type="text"
+        placeholder="Card Number..."
+        formControlName="number"
+        appCardNumber
+        (input)="detectCardType()"
+      />
+      <mat-icon matPrefix svgIcon="credit-card"></mat-icon>
+      <img [src]="cardImageUrl" matSuffix width="35px" class="mr-2" />
+      <mat-error class="mat-error" *ngIf="form.get('number')?.hasError('required')">
+        Card number is required
+      </mat-error>
+      <mat-error class="mat-error" *ngIf="form.get('number')?.hasError('cardNumber')">
+        Invalid card number
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field appearance="outline" color="primary" class="mat-form-field">
+      <mat-label>Expiration Date</mat-label>
+      <input
+        matInput
+        type="text"
+        placeholder="MM/YYYY..."
+        formControlName="expiration"
+        appCardExpiration
+      />
+      <mat-icon matPrefix svgIcon="calendar-clock"></mat-icon>
+      <mat-error class="mat-error" *ngIf="form.get('expiration')?.hasError('required')">
+        Expiration date is required
+      </mat-error>
+      <mat-error class="mat-error" *ngIf="form.get('expiration')?.hasError('cardExpiration')">
+        Expiration date must be in MM/YYYY format
+      </mat-error>
+      <mat-error class="mat-error" *ngIf="form.get('expiration')?.hasError('cardAlreadyExpired')">
+        This card has already expired
+      </mat-error>
+    </mat-form-field>
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions align="end" class="mat-dialog-actions">
+  <button mat-button color="basic" (click)="closeDialog()">
+    <mat-icon svgIcon="close"></mat-icon>
+    Cancel
+  </button>
+  <button mat-flat-button color="primary" (click)="addCard()">
+    <mat-icon svgIcon="plus-circle"></mat-icon>
+    Create
+  </button>
+</mat-dialog-actions>

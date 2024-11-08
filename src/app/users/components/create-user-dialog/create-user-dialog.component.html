@@ -1,0 +1,190 @@
+<h2 mat-dialog-title class="mat-dialog-title">
+  <mat-icon svgIcon="account" class="mr-2"> </mat-icon>
+  Create user
+  <div class="flex-spacer"></div>
+  <button mat-icon-button (click)="closeDialog()">
+    <mat-icon svgIcon="close"> </mat-icon>
+  </button>
+</h2>
+<mat-dialog-content>
+  <form [formGroup]="form" class="py-2 form">
+    <mat-form-field appearance="outline" color="primary" class="mat-form-field">
+      <mat-label> Email </mat-label>
+      <input matInput type="text" placeholder="Email..." formControlName="email" />
+      <mat-icon matPrefix svgIcon="email"> </mat-icon>
+      <mat-error class="mat-error" *ngIf="form.get('email')?.hasError('required')">
+        Email is required
+      </mat-error>
+      <mat-error class="mat-error" *ngIf="form.get('email')?.hasError('email')">
+        The email is not valid
+      </mat-error>
+      <mat-error class="mat-error" *ngIf="form.get('email')?.hasError('maxLength')">
+        The email must have a maximum of 320 characters
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field appearance="outline" color="primary" class="mat-form-field">
+      <mat-label> Role </mat-label>
+      <mat-select formControlName="role">
+        @for (role of userRoles; track role.value) {
+        <mat-option [value]="role.value">{{ role.label }}</mat-option>
+        }
+      </mat-select>
+      <mat-icon matPrefix svgIcon="shield-account"> </mat-icon>
+      <mat-error class="mat-error" *ngIf="form.get('role')?.hasError('required')">
+        The role is required
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field appearance="outline" color="primary" class="mat-form-field">
+      <mat-label> Password </mat-label>
+      <input
+        matInput
+        [type]="passwordInputType"
+        placeholder="Password..."
+        formControlName="password"
+      />
+      <mat-icon matPrefix svgIcon="lock"> </mat-icon>
+      <button mat-icon-button matSuffix (click)="togglePasswordVisibility()">
+        <mat-icon [svgIcon]="passwordInputType === 'password' ? 'eye' : 'eye-off'"> </mat-icon>
+      </button>
+      <mat-error class="mat-error" *ngIf="form.get('password')?.hasError('required')">
+        Password is requiredPassword is required
+      </mat-error>
+      <mat-error class="mat-error" *ngIf="form.get('password')?.hasError('minlength')">
+        Password must be at least 10 characters
+      </mat-error>
+      <mat-error class="mat-error" *ngIf="form.get('password')?.hasError('maxlength')">
+        The password must have a maximum of 100 characters
+      </mat-error>
+      <mat-error class="mat-error" *ngIf="form.get('password')?.hasError('hasNumber')">
+        Password must have at least one number
+      </mat-error>
+      <mat-error class="mat-error" *ngIf="form.get('password')?.hasError('hasUppercase')">
+        Password must have at least one uppercase letter
+      </mat-error>
+      <mat-error class="mat-error" *ngIf="form.get('password')?.hasError('hasLowercase')">
+        Password must have at least one lowercase letter
+      </mat-error>
+      <mat-error class="mat-error" *ngIf="form.get('password')?.hasError('hasSpecialCharacter')">
+        Password must have at least one special character
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field appearance="outline" color="primary" class="mat-form-field">
+      <mat-label> Confirm Password </mat-label>
+      <input
+        matInput
+        [type]="passwordInputType"
+        placeholder="Confirm Password..."
+        formControlName="confirmPassword"
+      />
+      <mat-icon matPrefix svgIcon="lock-check"> </mat-icon>
+      <button mat-icon-button matSuffix (click)="togglePasswordVisibility()">
+        <mat-icon [svgIcon]="passwordInputType === 'password' ? 'eye' : 'eye-off'"> </mat-icon>
+      </button>
+      <mat-error class="mat-error" *ngIf="form.get('confirmPassword')?.hasError('required')">
+        Confirmation is required
+      </mat-error>
+      <mat-error class="mat-error" *ngIf="form.get('confirmPassword')?.hasError('passwordMatch')">
+        Confirmation must match password
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field appearance="outline" color="primary" class="mat-form-field">
+      <mat-label> Name </mat-label>
+      <input matInput type="text" placeholder="Nombre..." formControlName="firstName" />
+      <mat-icon matPrefix svgIcon="account-box"> </mat-icon>
+      <mat-error class="mat-error" *ngIf="form.get('firstName')?.hasError('required')">
+        The name is required
+      </mat-error>
+      <mat-error class="mat-error" *ngIf="form.get('firstName')?.hasError('minlength')">
+        The name must be at least 3 characters
+      </mat-error>
+      <mat-error class="mat-error" *ngIf="form.get('firstName')?.hasError('maxlength')">
+        Name must be less than 50 characters
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field appearance="outline" color="primary" class="mat-form-field">
+      <mat-label> Last name </mat-label>
+      <input matInput type="text" placeholder="Last name..." formControlName="lastName" />
+      <mat-icon matPrefix svgIcon="account-box"> </mat-icon>
+      <mat-error class="mat-error" *ngIf="form.get('lastName')?.hasError('required')">
+        Last name is required
+      </mat-error>
+      <mat-error class="mat-error" *ngIf="form.get('lastName')?.hasError('minlength')">
+        Last name must be at least 3 characters
+      </mat-error>
+      <mat-error class="mat-error" *ngIf="form.get('lastName')?.hasError('maxlength')">
+        Last name must be less than 50 characters
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field appearance="outline" color="primary" class="mat-form-field">
+      <mat-label> Country </mat-label>
+      <mat-select formControlName="country" (selectionChange)="selectCountry()">
+        @for (country of countries; track country.code) {
+        <mat-option [value]="country">
+          <img
+            src="https://flagsapi.com/{{ country.code }}/flat/24.png"
+            [alt]="country.code"
+            class="country-img"
+          />
+          <span class="country-name"> {{ country.name }} </span>
+        </mat-option>
+        }
+      </mat-select>
+      <mat-icon matPrefix svgIcon="flag"> </mat-icon>
+      <mat-error class="mat-error" *ngIf="form.get('country')?.hasError('required')">
+        The country is required
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field appearance="outline" color="primary" class="mat-form-field">
+      <mat-label> Phone number </mat-label>
+      <input
+        matInput
+        type="text"
+        placeholder="Select a country..."
+        formControlName="phoneNumber"
+        appPhoneNumber
+        [readonly]="!form.get('country')?.value"
+        [country]="form.get('country')?.value"
+      />
+      <mat-icon matPrefix svgIcon="phone"> </mat-icon>
+      <mat-error class="mat-error" *ngIf="form.get('phoneNumber')?.hasError('required')">
+        Phone number is required
+      </mat-error>
+      <mat-error
+        class="mat-error"
+        *ngIf="form.get('phoneNumber')?.hasError('phoneNumberWithAreaCode')"
+      >
+      The phone number is invalid
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field appearance="outline" color="primary" class="mat-form-field" id="address-field">
+      <mat-label> Address </mat-label>
+      <textarea
+        matInput
+        type="text"
+        placeholder="Address..."
+        formControlName="address"
+        rows="3"
+      ></textarea>
+      <mat-icon matPrefix svgIcon="map-marker"> </mat-icon>
+      <mat-error class="mat-error" *ngIf="form.get('address')?.hasError('required')">
+        Address is required
+      </mat-error>
+      <mat-error class="mat-error" *ngIf="form.get('address')?.hasError('minlength')">
+        Address must be at least 10 characters
+      </mat-error>
+      <mat-error class="mat-error" *ngIf="form.get('address')?.hasError('maxlength')">
+        Address must be less than 500 characters
+      </mat-error>
+    </mat-form-field>
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions align="end" class="mat-dialog-actions">
+  <button mat-button color="basic" (click)="closeDialog()">
+    <mat-icon svgIcon="close"> </mat-icon>
+    Cancel
+  </button>
+  <button mat-flat-button color="primary" (click)="addUser()">
+    <mat-icon svgIcon="plus-circle"> </mat-icon>
+    Create
+  </button>
+</mat-dialog-actions>

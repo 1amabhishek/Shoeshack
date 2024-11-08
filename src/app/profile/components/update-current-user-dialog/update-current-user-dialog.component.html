@@ -1,0 +1,108 @@
+<h2 mat-dialog-title class="mat-dialog-title">
+  <mat-icon svgIcon="account" class="mr-2"> </mat-icon>
+  Edit User
+  <div class="flex-spacer"></div>
+  <button mat-icon-button (click)="closeDialog()">
+    <mat-icon svgIcon="close"> </mat-icon>
+  </button>
+</h2>
+<mat-dialog-content>
+  <form [formGroup]="form" class="py-2 form">
+    <mat-form-field appearance="outline" color="primary" class="mat-form-field">
+      <mat-label> Email </mat-label>
+      <input matInput type="text" placeholder="Email..." formControlName="email" />
+      <mat-icon matPrefix svgIcon="email"> </mat-icon>
+      <mat-error class="mat-error" *ngIf="form.get('email')?.hasError('required')">
+        Email is required
+      </mat-error>
+      <mat-error class="mat-error" *ngIf="form.get('email')?.hasError('email')">
+        The email is not valid
+      </mat-error>
+      <mat-error class="mat-error" *ngIf="form.get('email')?.hasError('maxLength')">
+        The email must have a maximum of 320 characters
+      </mat-error>
+    </mat-form-field>
+    <mat-slide-toggle
+      class="mb-3"
+      color="primary"
+      formControlName="updatePassword"
+      id="password-toggle"
+      (change)="togglePasswordUpdate()"
+    >
+    Do you want to update the user's password?
+    </mat-slide-toggle>
+    <mat-form-field appearance="outline" color="primary" class="mat-form-field">
+      <mat-label> Password </mat-label>
+      <input
+        matInput
+        [type]="passwordInputType"
+        placeholder="Password..."
+        formControlName="password"
+      />
+      <mat-icon matPrefix svgIcon="lock"> </mat-icon>
+      <button
+        mat-icon-button
+        matSuffix
+        (click)="togglePasswordVisibility()"
+        *ngIf="form.get('updatePassword')!.value"
+      >
+        <mat-icon [svgIcon]="passwordInputType === 'password' ? 'eye' : 'eye-off'"> </mat-icon>
+      </button>
+      <mat-error class="mat-error" *ngIf="form.get('password')?.hasError('required')">
+        Password is required
+      </mat-error>
+      <mat-error class="mat-error" *ngIf="form.get('password')?.hasError('minlength')">
+        Password must be at least 10 characters
+      </mat-error>
+      <mat-error class="mat-error" *ngIf="form.get('password')?.hasError('maxlength')">
+        The password must have a maximum of 100 characters
+      </mat-error>
+      <mat-error class="mat-error" *ngIf="form.get('password')?.hasError('hasNumber')">
+        Password must have at least one number
+      </mat-error>
+      <mat-error class="mat-error" *ngIf="form.get('password')?.hasError('hasUppercase')">
+        Password must have at least one uppercase letter
+      </mat-error>
+      <mat-error class="mat-error" *ngIf="form.get('password')?.hasError('hasLowercase')">
+        Password must have at least one lowercase letter
+      </mat-error>
+      <mat-error class="mat-error" *ngIf="form.get('password')?.hasError('hasSpecialCharacter')">
+        Password must have at least one special character
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field appearance="outline" color="primary" class="mat-form-field">
+      <mat-label> Confirm Password </mat-label>
+      <input
+        matInput
+        [type]="passwordInputType"
+        placeholder="Confirm Password..."
+        formControlName="confirmPassword"
+      />
+      <mat-icon matPrefix svgIcon="lock-check"> </mat-icon>
+      <button
+        mat-icon-button
+        matSuffix
+        (click)="togglePasswordVisibility()"
+        *ngIf="form.get('updatePassword')!.value"
+      >
+        <mat-icon [svgIcon]="passwordInputType === 'password' ? 'eye' : 'eye-off'"> </mat-icon>
+      </button>
+      <mat-error class="mat-error" *ngIf="form.get('confirmPassword')?.hasError('required')">
+        Confirmation is required
+      </mat-error>
+      <mat-error class="mat-error" *ngIf="form.get('confirmPassword')?.hasError('passwordMatch')">
+        The confirmation must match the password
+      </mat-error>
+    </mat-form-field>
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions align="end" class="mat-dialog-actions">
+  <button mat-button color="basic" (click)="closeDialog()">
+    <mat-icon svgIcon="close"> </mat-icon>
+    Cancel
+  </button>
+  <button mat-flat-button color="primary" (click)="editUser()">
+    <mat-icon svgIcon="pencil"> </mat-icon>
+    Edit
+  </button>
+</mat-dialog-actions>
