@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "shoe-store-angular-frontend": {
+    "shoeshack": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -42,7 +42,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "outputPath": "dist/shoe-store-angular-frontend",
+            "outputPath": "dist/shoeshack",
             "index": "src/index.html",
             "browser": "src/main.ts",
             "polyfills": ["zone.js"],
@@ -94,10 +94,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "shoe-store-angular-frontend:build:production"
+              "buildTarget": "shoeshack:build:production"
             },
             "development": {
-              "buildTarget": "shoe-store-angular-frontend:build:development"
+              "buildTarget": "shoeshack:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -105,7 +105,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "buildTarget": "shoe-store-angular-frontend:build"
+            "buildTarget": "shoeshack:build"
           }
         },
         "test": {
